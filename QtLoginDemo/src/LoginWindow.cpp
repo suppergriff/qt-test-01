@@ -23,27 +23,27 @@ LoginWindow::LoginWindow(QWidget* parent)
 
 void LoginWindow::setupUi()
 {
-    setWindowTitle(QStringLiteral("登录"));
+    setWindowTitle(QStringLiteral("Login"));
     setFixedSize(360, 200);
 
     m_usernameEdit = new QLineEdit(this);
-    m_usernameEdit->setPlaceholderText(QStringLiteral("请输入用户名"));
+    m_usernameEdit->setPlaceholderText(QStringLiteral("Enter username"));
 
     m_passwordEdit = new QLineEdit(this);
-    m_passwordEdit->setPlaceholderText(QStringLiteral("请输入密码"));
+    m_passwordEdit->setPlaceholderText(QStringLiteral("Enter password"));
     m_passwordEdit->setEchoMode(QLineEdit::Password);
 
-    m_loginButton = new QPushButton(QStringLiteral("登录"), this);
+    m_loginButton = new QPushButton(QStringLiteral("Login"), this);
     m_loginButton->setAutoDefault(true);
     m_loginButton->setDefault(true);
 
-    m_statusLabel = new QLabel(QStringLiteral("请输入用户名和密码"), this);
+    m_statusLabel = new QLabel(QStringLiteral("Please enter username and password"), this);
     m_statusLabel->setAlignment(Qt::AlignCenter);
-    setStatus(QStringLiteral("请输入用户名和密码"), QColor("#888888"));
+    setStatus(QStringLiteral("Please enter username and password"), QColor("#888888"));
 
     auto* formLayout = new QFormLayout;
-    formLayout->addRow(QStringLiteral("用户名"), m_usernameEdit);
-    formLayout->addRow(QStringLiteral("密码"), m_passwordEdit);
+    formLayout->addRow(QStringLiteral("Username"), m_usernameEdit);
+    formLayout->addRow(QStringLiteral("Password"), m_passwordEdit);
 
     auto* buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch();
@@ -78,8 +78,8 @@ void LoginWindow::setLoginEnabled(bool enabled)
 {
     m_loginButton->setEnabled(enabled);
     m_loginButton->setText(enabled
-        ? QStringLiteral("登录")
-        : QStringLiteral("验证中..."));
+        ? QStringLiteral("Login")
+        : QStringLiteral("Verifying..."));
 }
 
 void LoginWindow::onLoginClicked()
@@ -88,12 +88,12 @@ void LoginWindow::onLoginClicked()
     const QString password = m_passwordEdit->text();
 
     if (username.isEmpty()) {
-        setStatus(QStringLiteral("请输入用户名"), QColor("#FF8C00"));
+        setStatus(QStringLiteral("Please enter username"), QColor("#FF8C00"));
         return;
     }
 
     if (password.isEmpty()) {
-        setStatus(QStringLiteral("请输入密码"), QColor("#FF8C00"));
+        setStatus(QStringLiteral("Please enter password"), QColor("#FF8C00"));
         return;
     }
 
@@ -102,9 +102,9 @@ void LoginWindow::onLoginClicked()
     const auto result = AuthValidator::validate(username, password);
 
     if (result == AuthValidator::Result::Success) {
-        setStatus(QStringLiteral("登录成功！欢迎，admin"), QColor("#228B22"));
+        setStatus(QStringLiteral("Login successful! Welcome, admin"), QColor("#228B22"));
     } else {
-        setStatus(QStringLiteral("用户名或密码错误"), QColor("#DC143C"));
+        setStatus(QStringLiteral("Invalid username or password"), QColor("#DC143C"));
     }
 
     setLoginEnabled(true);

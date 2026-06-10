@@ -1,4 +1,5 @@
 #include "LoginWindow.h"
+#include "AuthValidator.h"
 
 #include <QColor>
 #include <QFormLayout>
@@ -83,5 +84,28 @@ void LoginWindow::setLoginEnabled(bool enabled)
 
 void LoginWindow::onLoginClicked()
 {
-    // Task 4 实现
+    const QString username = m_usernameEdit->text();
+    const QString password = m_passwordEdit->text();
+
+    if (username.isEmpty()) {
+        setStatus(QStringLiteral("请输入用户名"), QColor("#FF8C00"));
+        return;
+    }
+
+    if (password.isEmpty()) {
+        setStatus(QStringLiteral("请输入密码"), QColor("#FF8C00"));
+        return;
+    }
+
+    setLoginEnabled(false);
+
+    const auto result = AuthValidator::validate(username, password);
+
+    if (result == AuthValidator::Result::Success) {
+        setStatus(QStringLiteral("登录成功！欢迎，admin"), QColor("#228B22"));
+    } else {
+        setStatus(QStringLiteral("用户名或密码错误"), QColor("#DC143C"));
+    }
+
+    setLoginEnabled(true);
 }
